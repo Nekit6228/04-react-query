@@ -9,7 +9,7 @@ import MovieModal from '../MovieModal/MovieModal';
 import SearchBar from '../SearchBar/SearchBar';
 import css from './App.module.css';
 
-import { fetchMovies } from '../../services/movieServise';
+import { fetchMovies } from '../../services/movieService';
 import { Movie } from '../../types/movie';
 import { useQuery } from "@tanstack/react-query";
 
