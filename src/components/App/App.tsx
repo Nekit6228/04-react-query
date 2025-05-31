@@ -23,7 +23,7 @@ export default function App() {
     queryFn: () => fetchMovies(query, currentPage),
     enabled: !!query,
     retry: false,
-    placeholderData: keepPreviousData,
+    placeholderData: (previousData) => previousData,
   });
 
   const movies = data?.results ?? [];
