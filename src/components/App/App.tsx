@@ -9,14 +9,13 @@ import MovieModal from '../MovieModal/MovieModal';
 import SearchBar from '../SearchBar/SearchBar';
 import css from './App.module.css';
 
-import { fetchMovies } from '../../services/movieService';
+import { fetchMovies } from '../../services/movieServise';
 import { Movie } from '../../types/movie';
 import { useQuery } from "@tanstack/react-query";
 
 export default function App() {
   const [query, setQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   const { data, isError, isLoading, isSuccess } = useQuery({
@@ -24,7 +23,7 @@ export default function App() {
     queryFn: () => fetchMovies(query, currentPage),
     enabled: !!query,
     retry: false,
-    keepPreviousData: true,
+    placeholderData: (previousData) => previousData,
   });
 
   const movies = data?.results ?? [];
@@ -40,33 +39,36 @@ export default function App() {
     }
   }, [isSuccess, movies]);
 
-  const openModal = (): void => setIsModalOpen(true);
-  const closeModal = (): void => setIsModalOpen(false);
+  const handleSearchSubmit = (searchQuery: string): void => {
+    setQuery(searchQuery);
+    setCurrentPage(1);
+  };
+
+  const handleMovieSelect = (movie: Movie): void => {
+    setSelectedMovie(movie);
+  };
+
+  const closeModal = (): void => {
+    setSelectedMovie(null);
+  };
 
   return (
     <>
       <Toaster />
       {isLoading && <Loader />}
-      <SearchBar onSubmit={(q) => {
-        setQuery(q);
-        setCurrentPage(1);
-      }} />
+      <SearchBar onSubmit={handleSearchSubmit} />
       {query && isError && <ErrorMessage />}
       {query && movies.length > 0 ? (
         <>
-          <MovieGrid
-            movies={movies}
-            onSelect={(movie) => {
-              setSelectedMovie(movie);
-              openModal();
-            }}
-          />
+          <MovieGrid movies={movies} onSelect={handleMovieSelect} />
           {totalPages > 1 && (
             <ReactPaginate
               pageCount={totalPages}
               pageRangeDisplayed={5}
               marginPagesDisplayed={1}
-              onPageChange={({ selected }) => setCurrentPage(selected + 1)}
+              onPageChange={({ selected }: { selected: number }) =>
+                setCurrentPage(selected + 1)
+              }
               forcePage={currentPage - 1}
               containerClassName={css.pagination}
               activeClassName={css.active}
@@ -74,7 +76,7 @@ export default function App() {
               previousLabel="←"
             />
           )}
-          {isModalOpen && selectedMovie && (
+          {selectedMovie && (
             <MovieModal movie={selectedMovie} onClose={closeModal} />
           )}
         </>

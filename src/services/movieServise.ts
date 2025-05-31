@@ -3,13 +3,13 @@ import { Movie } from '../types/movie';
 
 const BASE_URL = 'https://api.themoviedb.org/3';
 
-interface FetchMoviesResponse {
+export interface FetchMoviesResponse {
   results: Movie[];
   page: number;
   total_pages: number;
 }
 
-export const fetchMovies = async (query: string, page: number): Promise<Movie[]> => {
+export const fetchMovies = async (query: string, page: number): Promise<FetchMoviesResponse> => {
   const response: AxiosResponse<FetchMoviesResponse> = await axios.get(`${BASE_URL}/search/movie`, {
     params: {
       query,
