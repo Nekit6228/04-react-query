@@ -27,6 +27,7 @@ export default function App() {
     keepPreviousData: true, 
   });
 
+  // keep
   const movies = data?.results ?? [];
   const totalPages = data?.total_pages ?? 0;
 
