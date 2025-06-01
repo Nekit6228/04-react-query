@@ -18,7 +18,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-  const { data, isError, isLoading, isSuccess, error } = useQuery<FetchMoviesResponse>({
+  const { data, isError, isLoading, isSuccess } = useQuery<FetchMoviesResponse>({
     queryKey: ["movies", query, currentPage],
     queryFn: () => fetchMovies(query, currentPage),
     enabled: !!query,
