@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import toast, { Toaster } from 'react-hot-toast';
 import ReactPaginate from "react-paginate";
 
-import MovieGrid from '../MovieGrig/MovieGrid';
+import MovieGrid from '../MovieGrid/MovieGrid';
 import Loader from '../Loader/Laoder';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import MovieModal from '../MovieModal/MovieModal';
