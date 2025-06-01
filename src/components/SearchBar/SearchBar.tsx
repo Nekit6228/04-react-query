@@ -6,10 +6,13 @@ interface SearchBarProps {
 }
 
 export default function SearchBar({ onSubmit }: SearchBarProps) {
-  const handleSubmit = (formData: FormData) => {
-    const query = formData.get('query')?.toString().trim();
+
+  const handleClick = () => {
+    const input = document.querySelector('input[name="query"]') as HTMLInputElement | null;
+    const query = input?.value.trim();
+
     if (!query) {
-      toast.error('Please enter a search query'); 
+      toast.error('Please enter a search query');
       return;
     }
 
@@ -28,7 +31,7 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
           Powered by TMDB
         </a>
 
-        <form className={styles.form} action={handleSubmit}>
+        <div className={styles.form}>
           <input
             className={styles.input}
             type="text"
@@ -37,10 +40,10 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
             autoComplete="off"
             autoFocus
           />
-          <button className={styles.button} type="submit">
+          <button className={styles.button} type="button" onClick={handleClick}>
             Search
           </button>
-        </form>
+        </div>
       </div>
     </header>
   );
