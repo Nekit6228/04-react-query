@@ -11,7 +11,8 @@ import css from './App.module.css';
 
 import { fetchMovies } from '../../services/movieService';
 import type { Movie, FetchMoviesResponse } from '../../types/movie';
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query"; 
+
 
 export default function App() {
   const [query, setQuery] = useState<string>("");
