@@ -46,11 +46,11 @@ export default function App() {
   return (
     <>
       <Toaster />
-      {isLoading && <Loader />}
       <SearchBar onSubmit={(q) => {
         setQuery(q);
         setCurrentPage(1);
       }} />
+      {isLoading && <Loader />}
       {query && isError && <ErrorMessage />}
       {query && movies.length > 0 ? (
         <>
