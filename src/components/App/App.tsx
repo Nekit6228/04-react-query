@@ -3,7 +3,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import ReactPaginate from "react-paginate";
 
 import MovieGrid from '../MovieGrid/MovieGrid';
-import Loader from '../Loader/Laoder';
+import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import MovieModal from '../MovieModal/MovieModal';
 import SearchBar from '../SearchBar/SearchBar';
@@ -24,15 +24,11 @@ export default function App() {
     queryFn: () => fetchMovies(query, currentPage),
     enabled: !!query,
     retry: false,
-    placeholderData: (previousData) => previousData,
+    keepPreviousData: true, 
   });
 
   const movies = data?.results ?? [];
   const totalPages = data?.total_pages ?? 0;
-
-  useEffect(() => {
-    if (data?.page) setCurrentPage(data.page);
-  }, [data?.page]);
 
   useEffect(() => {
     if (isSuccess && movies.length === 0) {
