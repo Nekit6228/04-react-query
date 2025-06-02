@@ -1,4 +1,3 @@
-
 import css from "./App.module.css";
 import { useQuery } from "@tanstack/react-query";
 import SearchBar from "../SearchBar/SearchBar";
