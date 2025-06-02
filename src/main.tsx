@@ -12,7 +12,7 @@ createRoot(document.getElementById('root') as  HTMLDivElement).render(
   <QueryClientProvider client={queryClient}>
   <StrictMode>
     <App />
-    <ReactQueryDevtools initialIsOpen={true} />
+    <ReactQueryDevtools initialIsOpen={false} />
   </StrictMode>,
   </QueryClientProvider>
   
