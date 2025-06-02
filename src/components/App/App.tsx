@@ -1,11 +1,11 @@
 import css from "./App.module.css";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import SearchBar from "../SearchBar/SearchBar";
 import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import ReactPaginate from "react-paginate";
 import type { Movie } from "../../types/movie";
-import fetchMovies from "../../services/movieService";
+import {fetchMovies} from "../../services/movieService";
 import MovieGrid from "../MovieGrid/MovieGrid";
 import MovieModal from "../MovieModal/MovieModal";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
@@ -16,6 +16,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+
 
   const { data, isError, isLoading, isSuccess } = useQuery({
     queryKey: ["movies", query, currentPage],
@@ -28,35 +29,29 @@ export default function App() {
   const movies = data?.results;
   const totalPages = data?.total_pages ?? 0;
 
+
   useEffect(() => {
-    if (data?.page) setCurrentPage(data.page);
-  }, [data?.page]);
+    setCurrentPage(1);
+  }, [query]);
 
   useEffect(() => {
     if (isSuccess && movies?.length === 0) {
-      toast("No movies found for your request.");
+      toast("No movies found for your request.", { icon: "😞" });
     }
   }, [isSuccess, movies]);
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const openModal = (): void => setIsModalOpen(true);
+  const closeModal = (): void => setIsModalOpen(false);
 
-  return (
+   return (
     <>
       <Toaster />
 
-      {isLoading && <Loader />}
-
-      <SearchBar
-        onSubmit={(query) => {
-          setQuery(query);
-          setCurrentPage(1);
-        }}
-      />
+      <SearchBar onSubmit={(newQuery) => setQuery(newQuery)} />
 
       {query && isError && <ErrorMessage />}
-
-      {query && movies && movies.length > 0 && (
+      {isLoading && <Loader />}
+      {query && movies && movies.length > 0 ? (
         <>
           <MovieGrid
             movies={movies}
@@ -79,7 +74,7 @@ export default function App() {
             />
           )}
         </>
-      )}
+      ) : null}
 
       {isModalOpen && selectedMovie && (
         <MovieModal
