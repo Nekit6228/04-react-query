@@ -1,36 +1,23 @@
 import toast from "react-hot-toast";
 import css from "./SearchBar.module.css";
-import { useEffect } from "react";
+import { FormEvent, useState } from "react";
 
 interface SearchBarProps {
   onSubmit: (query: string) => void;
 }
 
 export default function SearchBar({ onSubmit }: SearchBarProps) {
-  useEffect(() => {
-    function handleFormSubmit(event: Event) {
-      const form = event.target as HTMLFormElement;
-      if (
-        form.tagName !== "FORM" ||
-        form.getAttribute("action") !== "handleSubmit"
-      ) {
-        return;
-      }
-      event.preventDefault();
-      const formData = new FormData(form);
-      const query = (formData.get("query") as string)?.trim();
-      if (!query) {
-        toast("Please enter your search query.");
-        return;
-      }
-      onSubmit(query);
-    }
+  const [query, setQuery] = useState("");
 
-    document.addEventListener("submit", handleFormSubmit);
-    return () => {
-      document.removeEventListener("submit", handleFormSubmit);
-    };
-  }, [onSubmit]);
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();  
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) {
+      toast("Please enter your search query.");
+      return;
+    }
+    onSubmit(trimmedQuery);
+  };
 
   return (
     <header className={css.header}>
@@ -51,7 +38,7 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
           </a>
         </div>
 
-        <form action="handleSubmit" className={css.form}>
+        <form onSubmit={handleSubmit} className={css.form}>
           <div className={css.inputGroup}>
             <input
               className={css.input}
@@ -60,6 +47,8 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
               autoComplete="off"
               placeholder="Search movies..."
               autoFocus
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
             />
             <button className={css.button} type="submit">
               Search
