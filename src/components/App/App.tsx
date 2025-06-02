@@ -1,5 +1,5 @@
 import css from "./App.module.css";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery,keepPreviousData } from "@tanstack/react-query";
 import SearchBar from "../SearchBar/SearchBar";
 import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -22,7 +22,7 @@ export default function App() {
     queryFn: () => fetchMovies(query, currentPage),
     enabled: !!query,
     retry: false,
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
   const movies = data?.results;
