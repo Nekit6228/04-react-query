@@ -20,7 +20,7 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
       const formData = new FormData(form);
       const query = (formData.get("query") as string)?.trim();
       if (!query) {
-        toast("Please enter your search query.", { icon: "🤔" });
+        toast("Please enter your search query.");
         return;
       }
       onSubmit(query);

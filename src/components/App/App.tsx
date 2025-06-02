@@ -36,7 +36,7 @@ export default function App() {
 
   useEffect(() => {
     if (isSuccess && movies?.length === 0) {
-      toast("No movies found for your request.", { icon: "😞" });
+      toast("No movies found for your request.");
     }
   }, [isSuccess, movies]);
 
